@@ -1,0 +1,141 @@
+
+body, html {
+    background-color: #EBECF0;
+}
+
+body, input, button {
+    font-family: 'Roboto', sans-serif;
+    letter-spacing: -0.2px;
+    font-size: 16px;
+    
+}
+
+
+.well{
+    margin: 10px;
+}
+
+/* общие характеристикик карточки с заданием и турнирной таблицы */
+.task{
+    margin-left: 200px;
+    border: 0;
+    outline: 0;
+    font-size: 16px;
+    border-radius: 32px;
+    padding: 16px;
+    background-color: rgb(85, 85, 85);
+    font-weight: bold;
+    box-shadow: -3px -3px 3px #FFF, 3px 3px 3px rgb(63, 63, 63);
+    transition: all 0.2s ease-in-out;
+    font-weight: 600;
+    display: block;
+    width: 100%;
+    color: rgb(255, 255, 255);
+    min-width: 420x;
+    min-height: 420px;
+    max-width: 420px;
+    max-height: 420px;
+}
+
+
+/*Кнопки с вариантами ответа*/
+button{
+    border: 0;
+    outline: 0;
+    font-size: 16px;
+    border-radius: 32px;
+    padding: 16px;
+    background-color: #EBECF0;
+    text-shadow: 1px 1px 0 #FFF;
+    color: #61677C;
+    font-weight: bold;
+    box-shadow: -5px -5px 20px #FFF, 5px 5px 20px #BABECC;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+    font-weight: 600;
+    display: block;
+    width: 100%;
+    color: rgb(87, 87, 87);
+    min-width: 200px;
+    min-height: 200px;
+    margin-left: 10px;
+}
+
+
+button:hover {
+    box-shadow: -2px -2px 5px #FFF, 2px 2px 5px #BABECC;
+}
+button:active {
+    box-shadow: inset 1px 1px 2px #BABECC, inset -1px -1px 2px #FFF;
+}
+
+button:focus{
+    outline: 0;    
+}
+
+/* карточки с ответами игроков */
+.answer{
+    
+    border: 0;
+    outline: 0;
+    font-size: 16px;
+    border-radius: 32px;
+    padding: 16px;
+    background-color: #EBECF0;
+    text-shadow: 1px 1px 0 #FFF;
+    color: #61677C;
+    font-weight: bold;
+    box-shadow: -2px -2px 5px #FFF, 2px 2px 5px #BABECC;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+    font-weight: 600;
+    display: block;
+    width: 100%;
+    color: rgb(87, 87, 87);
+    min-width: 200px;
+    min-height: 200px;
+    position: relative;
+    
+}
+
+.answer:active {
+    background-color: #EBECF0;
+    
+}
+
+
+/* ТУРНИРНАЯ ТАБЛИЦА */
+
+.score{
+    margin-left: 200px;
+    border: 0;
+    outline: 0;
+    font-size: 16px;
+    border-radius: 32px;
+    padding: 16px;
+    background-color: #EBECF0;
+    text-shadow: 1px 1px 0 #FFF;
+    color: #61677C;
+    font-weight: bold;
+    box-shadow: -2px -2px 5px #FFF, 2px 2px 5px #BABECC;
+    transition: all 0.2s ease-in-out;
+    font-weight: 600;
+    display: block;
+    width: 100%;
+    color: rgb(87, 87, 87);
+    min-width: 420x;
+    min-height: 420px;
+    max-width: 420px;
+    max-height: 420px;
+}
+
+
+.title{
+    visibility: hidden;
+}
+
+.title:hover{
+    visibility: visible;
+    color: rgb(0, 0, 0);
+    
+}
