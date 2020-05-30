@@ -500,8 +500,6 @@ class Game(models.Model):
         card_czar = self.player_set.filter(id=card_czar_id).get()
         self.player_queue.add_item(card_czar_id)
         self.player_queue.save()
-        print('czar:', card_czar_id)
-        print('queue:', self.player_queue.items)
 
         self.current_round = Round.objects.create(
             game=self,
