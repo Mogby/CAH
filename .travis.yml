@@ -1,9 +1,9 @@
 language: python
-  python:
-    - 3.8
-  before_install:
-    - cd rest_api
-  install:
-    - pip install -r requirements.txt
-  script:
-    - python manage.py test
+python:
+  - "3.8"
+before_install:
+  - cd rest_api
+install:
+  - pip install -r requirements.txt
+script:
+  - python manage.py test
