@@ -278,7 +278,7 @@ class Deque(models.Model):
         self._set_deque(new_deque)
 
     def draw_single_card(self):
-        return self.draw_cards(1)
+        return self.draw_cards(1)[0]
 
     def draw_cards(self, num_cards):
         if num_cards > self.size:
@@ -339,11 +339,11 @@ class Game(models.Model):
 
     HAND_SIZE = 10
 
-    PLAY_PHASE_LENGTH_SECONDS = 300
-    PICK_PHASE_LENGTH_SECONDS = 300
-    FINISH_DELAY_SECONDS = 1
+    PLAY_PHASE_LENGTH_SECONDS = 40
+    PICK_PHASE_LENGTH_SECONDS = 40
+    FINISH_DELAY_SECONDS = 5
 
-    WINNER_SCORE = 3
+    WINNER_SCORE = 10
 
     Status = models.TextChoices('Status', 'CREATED STARTED FINISHED')
 
@@ -477,7 +477,7 @@ class Game(models.Model):
             self._deal_cards_to_player(player)
 
     def _draw_black_card(self):
-        card_id = self.black_deque.draw_single_card()[0]
+        card_id = self.black_deque.draw_single_card()
         self.black_deque.save()
         return Card.objects.get(id=card_id)
 
@@ -486,6 +486,18 @@ class Game(models.Model):
             raise GameFinishedError()
         if self.status == Game.Status.CREATED:
             self.status = Game.Status.STARTED
+
+        if self.current_round is not None:
+            played_cards = list(
+                self
+                    .current_round
+                    .turn_set
+                    .values_list('card__id', flat=True)
+            )
+            self.white_deque.add_cards(played_cards)
+
+            black_card = self.current_round.black_card.id
+            self.black_deque.add_cards([black_card])
 
         now = datetime.now()
 
@@ -591,6 +603,14 @@ class Game(models.Model):
 
     def remove_player(self, player):
         self._update_state()
+
+        cards_in_hand = list(
+            player
+                .current_hand
+                .cards
+                .values_list('id', flat=True)
+        )
+        self.white_deque.add_cards(cards_in_hand)
 
         self.player_queue.remove_item(player.id)
         self.player_queue.save()

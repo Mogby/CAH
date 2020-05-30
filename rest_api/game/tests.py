@@ -1,7 +1,9 @@
+from django.db.models import Max, Sum
 from django.test import TestCase
 
 from game.errors import *
 from game.models import *
+from game.bots import RandomBot
 
 
 class CAHTestCase(TestCase):
@@ -234,6 +236,77 @@ class ModelsTestCase(CAHTestCase):
         self.assertEqual(host.current_hand, None)
         self.assertEqual(host.score, None)
 
+
+class GameplayTest(CAHTestCase):
+    def test_game(self):
+        Game.FINISH_DELAY_SECONDS = 0
+        Game.WINNER_SCORE = 3
+
+        for i in range(2):
+            Card.objects.create(
+                text='Black card #{}'.format(i),
+                is_black=True,
+                pick=1,
+            )
+        for i in range(Game.MAX_PLAYERS * Game.HAND_SIZE):
+            Card.objects.create(
+                text='White card #{}'.format(i),
+                is_black=False,
+            )
+
+        players = []
+        for i in range(Game.MAX_PLAYERS):
+            new_player = self.create_new_player('monkey_{}'.format(i))
+            players.append(new_player)
+
+        host = players[0]
+        game = self.create_game(host)
+        player_bot = {}
+        for player in players:
+            if player != host:
+                self.join_game(player, game)
+            player_bot[player] = RandomBot(player, game)
+
+
+        max_possible_score = \
+                Game.WINNER_SCORE \
+                + (Game.WINNER_SCORE - 1) * (len(players) - 1)
+        score_sum = 0
+        self.start_game(host)
+        game.refresh_from_db()
+        game._update_state()
+        while game.status == Game.Status.STARTED:
+            self.assertEqual(game.current_round.get_state(), Round.State.PLAY)
+
+            card_czar = game.current_round.card_czar
+            for player in players:
+                if player != card_czar:
+                    player_bot[player].update()
+
+            game.refresh_from_db()
+            game._update_state()
+            self.assertEqual(game.current_round.get_state(), Round.State.PICK)
+
+            player_bot[card_czar].update()
+
+            game.refresh_from_db()
+            new_score_sum = \
+                    game.player_set.aggregate(Sum('score'))['score__sum']
+            self.assertEqual(score_sum + 1, new_score_sum)
+            self.assertLess(new_score_sum, max_possible_score)
+            score_sum = new_score_sum
+
+            while game.current_round.get_state() == Round.State.WAITING_FINISH:
+                game.refresh_from_db()
+                game._update_state()
+
+            game.refresh_from_db()
+            game._update_state()
+
+        winner_score = game.player_set.aggregate(Max('score'))['score__max']
+        self.assertEqual(winner_score, Game.WINNER_SCORE)
+
+
 class DequeTestCase(CAHTestCase):
     def test_simple(self):
         deque = Deque.objects.create()
@@ -253,7 +326,7 @@ class DequeTestCase(CAHTestCase):
         self.assertEqual(deque.size, 3)
         self.assertEqual(set(deque._get_cards()), set([1, 2, 3]))
 
-        picked_cards = deque.draw_single_card()
+        picked_cards = [deque.draw_single_card()]
 
         self.assertEqual(deque.size, 2)
         self.assertEqual(set(deque._get_cards()), set(deque._get_deque()))
