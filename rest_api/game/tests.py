@@ -32,7 +32,7 @@ class CAHTestCase(TestCase):
         except Exception as e:
             self.fail('create_new_player raised exception: {}'.format(str(e)))
 
-    def get_players_by_ids(self, ids): 
+    def get_players_by_ids(self, ids):
         try:
             return Player.get_players_by_ids(ids)
         except Exception as e:
@@ -372,6 +372,7 @@ class DequeTestCase(CAHTestCase):
 class QueueTestCase(CAHTestCase):
     def test_simple(self):
         queue = Queue.objects.create()
+        print(queue.items)
 
         queue.add_item(1)
         queue.add_item(2)

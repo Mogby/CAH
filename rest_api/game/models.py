@@ -3,7 +3,7 @@ import json
 import random
 import time
 
-from collections import Counter
+from collections import deque, Counter
 from datetime import datetime, timedelta
 from enum import IntEnum
 
@@ -11,6 +11,8 @@ from django.conf import settings
 from django.core import validators
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models, transaction
+
+from picklefield.fields import PickledObjectField
 
 from game.errors import *
 
@@ -303,34 +305,24 @@ class Deque(models.Model):
 
 
 class Queue(models.Model):
-    items = models.TextField(
-        default='[]',
+    items = PickledObjectField(
+        default=deque
     )
 
-    def _get_items(self):
-        return json.loads(self.items)
-
-    def _set_items(self, items):
-        self.items = json.dumps(items)
-
     def add_item(self, item):
-        items = self._get_items()
-        items.append(item)
-        self._set_items(items)
+        self.items.append(item)
+        self.save()
 
     def pop_item(self):
-        items = self._get_items()
-        if len(items) == 0:
+        if len(self.items) == 0:
             return None
-        popped_item = items[0]
-        items = items[1:]
-        self._set_items(items)
+        popped_item = self.items.popleft()
+        self.save()
         return popped_item
 
     def remove_item(self, item):
-        items = self._get_items()
-        items = [i for i in items if i != item]
-        self._set_items(items)
+        self.items = deque(i for i in self.items if i != item)
+        self.save()
 
 
 class Game(models.Model):
