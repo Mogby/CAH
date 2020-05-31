@@ -314,24 +314,24 @@ class DequeTestCase(CAHTestCase):
         deque.shuffle()
         picked_cards = deque.draw_cards(2)
 
-        self.assertEqual(deque.size, 1)
+        self.assertEqual(deque.get_size(), 1)
         self.assertEqual(deque.cards, deque.deque)
         self.assertEqual(
-            set(picked_cards + deque._get_deque()),
+            set(picked_cards + deque.deque),
             set([1, 2, 3])
         )
 
         deque.add_cards(picked_cards)
 
-        self.assertEqual(deque.size, 3)
-        self.assertEqual(set(deque._get_cards()), set([1, 2, 3]))
+        self.assertEqual(deque.get_size(), 3)
+        self.assertEqual(set(deque.cards), set([1, 2, 3]))
 
         picked_cards = [deque.draw_single_card()]
 
-        self.assertEqual(deque.size, 2)
-        self.assertEqual(set(deque._get_cards()), set(deque._get_deque()))
+        self.assertEqual(deque.get_size(), 2)
+        self.assertEqual(set(deque.deque), set(deque.deque))
         self.assertEqual(
-            set(picked_cards + deque._get_deque()),
+            set(picked_cards + deque.deque),
             set([1, 2, 3])
         )
 
@@ -347,23 +347,23 @@ class DequeTestCase(CAHTestCase):
         deque.add_cards(cards)
         deque.shuffle()
 
-        self.assertNotEqual(deque._get_deque(), cards)
-        self.assertEqual(set(deque._get_cards()), set(cards))
+        self.assertNotEqual(deque.deque, cards)
+        self.assertEqual(set(deque.deque), set(cards))
 
     def test_repeated_cards(self):
         deque = Deque.objects.create()
         deque.add_cards([1, 1, 1, 1, 1])
         deque.draw_single_card()
 
-        self.assertEqual(deque.deque, '[1, 1, 1, 1]')
-        self.assertEqual(deque.cards, '[1, 1, 1, 1]')
+        self.assertEqual(deque.deque, [1, 1, 1, 1])
+        self.assertEqual(deque.cards, [1, 1, 1, 1])
 
     def test_remove(self):
         deque = Deque.objects.create()
         deque.add_cards([1, 1, 2, 3, 3])
         deque._remove_cards([1, 1, 2])
 
-        self.assertEqual(deque.cards, '[3, 3]')
+        self.assertEqual(deque.cards, [3, 3])
 
         with self.assertRaises(CardNotInDequeError):
             deque._remove_cards([1])
@@ -372,7 +372,6 @@ class DequeTestCase(CAHTestCase):
 class QueueTestCase(CAHTestCase):
     def test_simple(self):
         queue = Queue.objects.create()
-        print(queue.items)
 
         queue.add_item(1)
         queue.add_item(2)

@@ -220,33 +220,18 @@ class Player(models.Model):
 
 
 class Deque(models.Model):
-    cards = models.TextField(
-        default='[]',
+    cards = PickledObjectField(
+        default=list
     )
-    deque = models.TextField(
-        default='[]',
-    )
-    size = models.PositiveSmallIntegerField(
-        default=0,
+    deque = PickledObjectField(
+        default=list
     )
 
     def __str__(self):
         return 'Deque(id={}, size={})'.format(
             self.id,
-            self.size,
+            self.get_size(),
         )
-
-    def _get_deque(self):
-        return json.loads(self.deque)
-
-    def _set_deque(self, cards):
-        self.deque = json.dumps(cards)
-
-    def _get_cards(self):
-        return json.loads(self.cards)
-
-    def _set_cards(self, cards):
-        self.cards = json.dumps(cards)
 
     def _remove_cards(self, cards_to_remove):
         def try_pop(counter, element):
@@ -258,43 +243,40 @@ class Deque(models.Model):
             return True
 
         cards_to_remove = Counter(cards_to_remove)
-        current_cards = self._get_cards()
         num_cards_to_remove = len(cards_to_remove)
         new_cards = [
             card
-            for card in current_cards
+            for card in self.cards
             if not try_pop(cards_to_remove, card)
         ]
         if len(cards_to_remove) != 0:
             raise CardNotInDequeError()
-        self.size -= num_cards_to_remove
-        self._set_cards(new_cards)
+        self.cards = new_cards
+
+    def get_size(self):
+        return len(self.cards)
 
     def add_cards(self, new_cards):
-        self.size += len(new_cards)
-        self._set_cards(self._get_cards() + list(new_cards))
+        self.cards = self.cards + list(new_cards)
 
     def shuffle(self):
-        new_deque = self._get_cards()
-        random.shuffle(new_deque)
-        self._set_deque(new_deque)
+        self.deque = self.cards[:]
+        random.shuffle(self.deque)
 
     def draw_single_card(self):
         return self.draw_cards(1)[0]
 
     def draw_cards(self, num_cards):
-        if num_cards > self.size:
+        if num_cards > self.get_size():
             raise NotEnoughCardsError()
 
-        deque = self._get_deque()
-
-        if len(deque) > num_cards:
-            drawn_cards = deque[:num_cards]
+        if len(self.deque) > num_cards:
+            drawn_cards = self.deque[:num_cards]
             self._remove_cards(drawn_cards)
-            self._set_deque(deque[num_cards:])
+            self.deque = self.deque[num_cards:]
             return drawn_cards
 
-        drawn_cards = deque[:]
+        drawn_cards = self.deque[:]
         self._remove_cards(drawn_cards)
         self.shuffle()
 
