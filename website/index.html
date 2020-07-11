@@ -1,86 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<title>Document</title>
+    <meta charset="UTF-8">
+    <title>Document</title>
 </head>
 <body>
-	<div id="loginform">
-		<label for="text1">Введите имя</label>
-		<input type="text" id="text1">
-		<button id="but1">Зайти</button>
-	</div>
-	<div id="joingame" style="display: none">
-		<button id="butcreate">Создать новую</button>
-		<input type="text" id="text2">
-		<button id="butjoin">Присоединиться к существующей</button>
-	</div>
-	<div id="game" style="display: none">
-		<p id="state"></p>
-	</div>
-<script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
-	<script type="text/javascript" charset="utf-8">
-		var Token
-		var GameId
-		$(document).ready(function() {
-			$('#but1').click(function(){
-				let name = $('#text1').val()
-				let url = "http://localhost:8000/players/add"
-				$.get(url, {name: name}, function(data) {
-					setToken(data)
-					$('#loginform').fadeOut();
-					$('#joingame').fadeIn();
-				})
-				
-			})
-			$('#butcreate').click(function(){
-				let url = "http://localhost:8000/games/create"
-				$.get(url, {authToken: getToken()}, function(data) {
-					setGameId(data)
-					$('#joingame').fadeOut();
-					$('#game').fadeIn();
-				})
-				
-			})
-			$('#butjoin').click(function(){
-				let gameid = $('#text2').val()
-				let url = "http://localhost:8000/games/join"
-				$.get(url, {id: gameid, authToken: getToken()}, function(data) {
-					setGameId(gameid)
-					$('#joingame').fadeOut();
-					$('#game').fadeIn();
-				})
-			})
-			setInterval(updateStatus, 1000)
-			
-		})
-		function setToken(token) {
-			Token = token	
-		}
-		function getToken() {
-			return Token
-		}
-		function setGameId(gameId) {
-			GameId = gameId	
-			console.log(GameId)
-		}
-		function getGameId() {
-			return GameId
-		}
-		
-		function updateStatus() {
-			let g1 = getGameId()
-			let g2 = getToken()
-			if ((g1 === undefined) || (g2 === undefined)) {
-				return
-			}
-			let url = "http://localhost:8000/games/get"
-			$.get(url, {id: g1, authToken: g2}, function(data) {
-				$("#state").text(JSON.stringify(data))
-			})
-		}
-	</script>
-	
+    <div id="loginform">
+        <label for="text1">Введите имя</label>
+        <input type="text" id="text1">
+        <button id="but1">Зайти</button>
+    </div>
+    <div id="joingame" style="display: none">
+        <button id="butcreate">Создать новую</button>
+        <input type="text" id="text2">
+        <button id="butjoin">Присоединиться к существующей</button>
+    </div>
+    <div id="game" style="display: none">
+        <p id="state"></p>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    <script type="text/javascript" charset="utf-8">
+        var Token
+        var GameId
+        $(document).ready(function() {
+            $('#but1').click(function(){
+                let name = $('#text1').val()
+                let url = "http://localhost:8000/players/add"
+                $.get(url, {name: name}, function(data) {
+                    setToken(data)
+                    $('#loginform').fadeOut();
+                    $('#joingame').fadeIn();
+                })
+            })
+            $('#butcreate').click(function(){
+                let url = "http://localhost:8000/games/create"
+                $.get(url, {authToken: getToken()}, function(data) {
+                    setGameId(data)
+                    $('#joingame').fadeOut();
+                    $('#game').fadeIn();
+                })
+            })
+            $('#butjoin').click(function(){
+                let gameid = $('#text2').val()
+                let url = "http://localhost:8000/games/join"
+                $.get(url, {id: gameid, authToken: getToken()}, function(data) {
+                    setGameId(gameid)
+                    $('#joingame').fadeOut();
+                    $('#game').fadeIn();
+                })
+            })
+            setInterval(updateStatus, 1000)
+        })
+        function setToken(token) {
+            Token = token
+        }
+        function getToken() {
+            return Token
+        }
+        function setGameId(gameId) {
+            GameId = gameId
+            console.log(GameId)
+        }
+        function getGameId() {
+            return GameId
+        }
+        function updateStatus() {
+            let g1 = getGameId()
+            let g2 = getToken()
+            if ((g1 === undefined) || (g2 === undefined)) {
+                return
+            }
+            let url = "http://localhost:8000/games/get"
+            $.get(url, {id: g1, authToken: g2}, function(data) {
+                $("#state").text(JSON.stringify(data))
+            })
+        }
+    </script>
 </body>
-
 </html>
