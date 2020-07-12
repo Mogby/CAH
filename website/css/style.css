@@ -80,3 +80,6 @@ form {
     height: 10px;
 }
 
+.game-view {
+	display: none
+}
