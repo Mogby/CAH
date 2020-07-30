@@ -1,0 +1,17 @@
+version: '3.7'
+services:
+  db:
+    image: postgres
+    environment:
+        - POSTGRES_DB=postgres
+        - POSTGRES_USER=postgres
+        - POSTGRES_PASSWORD=password
+  web:
+    build: .
+    command: ./docker-entrypoint.sh
+    ports:
+      - 8000:8000
+    volumes:
+      - ./rest_api:/cah/rest_api
+    depends_on:
+      - db
