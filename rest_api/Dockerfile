@@ -2,8 +2,8 @@ FROM python
 
 RUN mkdir /cah
 
-COPY . /cah/
+WORKDIR /cah
 
-WORKDIR /cah/rest_api
+COPY . /cah/
 
 RUN pip install -r requirements.txt

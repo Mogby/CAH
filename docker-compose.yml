@@ -6,8 +6,8 @@ services:
         - POSTGRES_DB=postgres
         - POSTGRES_USER=postgres
         - POSTGRES_PASSWORD=password
-  web:
-    build: .
+  rest_api:
+    build: ./rest_api
     command: ./docker-entrypoint.sh
     ports:
       - 8000:8000
