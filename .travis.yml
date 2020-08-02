@@ -4,4 +4,4 @@ python:
 services:
   - docker
 script:
-  - docker-compose run web python manage.py test
+  - docker-compose run rest_api python manage.py test
