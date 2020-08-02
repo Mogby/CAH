@@ -138,8 +138,6 @@ class Player(models.Model):
     @classmethod
     def get_player_by_token(cls, token, *related_fields, lock=True):
         players = Player.objects
-        if len(related_fields):
-            players = players.select_related(*related_fields)
         if lock:
             players = players.select_for_update()
         return players.get(auth_token=token)
