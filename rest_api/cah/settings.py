@@ -25,7 +25,7 @@ SECRET_KEY = '-9&r0q^py&6ssun1*w$9z6n@01uugh$0b+)eo_a(&uwv*dl%e9'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['cah.mogbymo.io']
 
 
 # Application definition
