@@ -107,11 +107,15 @@ function updateGameState() {
 	)
 }
 
+function move(){
+	switchToView('join-game')
+}
+
 /*==========[Logic]==========*/
 
 function init() {
 	setApiUrl('http://localhost:8000')
-	switchToView('login')
+	switchToView('choose-game-type')
 }
 
 $(document).ready(function() {
@@ -120,6 +124,6 @@ $(document).ready(function() {
 	$('#btn-login').click(login)
 	$('#btn-create').click(createGame)
 	$('#btn-join').click(joinGame)
-
+	$('#btn-choose-type').click(move)
 	setInterval(updateGameState, 1000)
 })

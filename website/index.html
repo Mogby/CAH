@@ -5,10 +5,9 @@
     <title>Cards Against Humanity</title>
     
     <link rel="stylesheet" href="css\style.css">
-    
 </head>
 
-<body>
+<body> 
     <div class="game-view" id="login">
         <label class="red">
             <input  id="login" type="text" placeholder="ВВЕДИ ЛОГИН"/>
@@ -16,10 +15,18 @@
         <button id="btn-login" class="red">Войти</button>
     </div>
 
+    <div class="game-view" id="choose-game-type">
+        <button id="btn-create" class="red">УСТРОИТЬ СВОЮ ПАТИ</button>
+        <button id="btn-choose-type" class="red">ПРИСТЫКОВАТЬСЯ К СОЗДАННОЙ</button>
+    </div>
+
     <div class="game-view" id="join-game">
-        <button id="btn-create" class="red">ПРИСТЫКОВАТЬСЯ НА РАНДОМЕ</button>
-        <button id="btn-join" class="red">УСТРОИТЬ СВОЮ ПАТИ</button>
-        <input id="game-id" type="text"/>
+        <button id="btn-random-join" class="red">ПРИСТЫКОВАТЬСЯ НА РАНДОМЕ</button>
+        <label class="red">
+            <input  id="game-id" type="text" placeholder="ВВЕДИ ID ВПИСКИ"/>
+        </label>
+        <button id="btn-join" class="red">Я ВСЕ НАПИСАЛ И ГОТОВ ИГРАТЬ</button>
+
     </div>
 
     <div class="game-view" id="game">

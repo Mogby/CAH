@@ -52,6 +52,7 @@ button {
 label {
     display: block;
     width: 100%;
+    margin-top: 70px;
 }
 
 button:hover {
@@ -81,5 +82,9 @@ div {
 }
 
 .game-view {
-	display: none
+	display: none;
+}
+
+#btn-join{
+   margin-top: 20px;
 }
