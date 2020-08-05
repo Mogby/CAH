@@ -9,9 +9,13 @@ services:
   rest_api:
     build: ./rest_api
     command: ./docker-entrypoint.sh
-    ports:
-      - 8000:8000
     volumes:
       - ./rest_api:/cah/rest_api
     depends_on:
       - db
+  website:
+    build: ./website
+    ports:
+      - 80:80
+    depends_on:
+      - rest_api
