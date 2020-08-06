@@ -17,5 +17,7 @@ services:
     build: ./website
     ports:
       - 80:80
+    volumes:
+      - ./website:/usr/share/nginx/html
     depends_on:
       - rest_api
