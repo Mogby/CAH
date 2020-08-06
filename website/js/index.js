@@ -114,7 +114,7 @@ function move(){
 /*==========[Logic]==========*/
 
 function init() {
-	setApiUrl('http://localhost:8000')
+	setApiUrl('http://localhost/api')
 	switchToView('choose-game-type')
 }
 
