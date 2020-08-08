@@ -10,7 +10,7 @@ services:
     build: ./rest_api
     command: ./docker-entrypoint.sh
     volumes:
-      - ./rest_api:/cah/rest_api
+      - ./rest_api:/cah
     depends_on:
       - db
   website:
