@@ -36,8 +36,13 @@ function switchToView(newView) {
 }
 
 function displayGameState(gameState) {
-	let gameStateStr = JSON.stringify(gameState)
-	$('div#game.game-view>p#state').text(gameStateStr)
+    let gameIdStr = JSON.stringify(gameState.id)
+    let gamePlayersStr = JSON.stringify(gameState.players)
+    let gameStatusStr = JSON.stringify(gameState.status)
+    let gameHostStr = JSON.stringify(gameState.hostId)
+    let gameStr = JSON.stringify(gameState)
+    $('div#game.game-view>p#state').text("Номер комнаты: " + gameIdStr + " ИГРОКИ: " + gamePlayersStr + " Статус: " + gameStatusStr + " Хост: " + gameHostStr)
+    //$('div#game.game-view>p#state').text(gameState)
 }
 
 /*==========[API]==========*/
@@ -51,7 +56,7 @@ function login() {
 		{ name: name },
 		function(data) {
 			setToken(data)
-			switchToView('join-game')
+			switchToView('choose-game-type')
 		}
 	)
 }
@@ -115,7 +120,7 @@ function move(){
 
 function init() {
 	setApiUrl('http://localhost/api')
-	switchToView('choose-game-type')
+	switchToView('login')
 }
 
 $(document).ready(function() {
