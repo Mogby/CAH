@@ -91,6 +91,19 @@ function joinGame() {
 	)
 }
 
+function leaveGame() {
+	let url = getMethodUrl('/games/leave')
+    $.get(
+        url,
+        {
+            authToken: getToken(),
+        }, 
+        function(data) {
+            switchToView('choose-game-type')
+        }
+    )
+}
+
 function updateGameState() {
 	let gameId = getGameId()
 	let token = getToken()
@@ -130,5 +143,6 @@ $(document).ready(function() {
 	$('#btn-create').click(createGame)
 	$('#btn-join').click(joinGame)
 	$('#btn-choose-type').click(move)
+    $('#btn-leave').click(leaveGame)
 	setInterval(updateGameState, 1000)
 })
