@@ -1,9 +1,12 @@
+import json
+
 from game.models import Card
 
+with open('test.json', 'r') as default_cards:
+    card_pack = json.load(default_cards)
 
-NUM_BLACK_CARDS = 50
-NUM_WHITE_CARDS = 200
-for i in range(NUM_BLACK_CARDS):
-    Card.create_card('_ #{}'.format(i+1), True)
-for i in range(NUM_WHITE_CARDS):
-    Card.create_card('White card #{}'.format(i+1), False)
+for blackCard in card_pack["blackCards"]:
+    Card.create_card(blackCard, True)
+
+for whiteCard in card_pack["whiteCards"]:
+    Card.create_card(whiteCard, False)

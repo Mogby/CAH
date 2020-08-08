@@ -19,7 +19,7 @@ from game.errors import *
 
 class Card(models.Model):
     text = models.CharField(
-        max_length=100,
+        max_length=200,
     )
     is_black = models.BooleanField(
     )
@@ -686,4 +686,3 @@ class Turn(models.Model):
         null=True,
         related_name='+',
     )
-
