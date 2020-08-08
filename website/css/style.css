@@ -88,3 +88,8 @@ div {
 #btn-join{
    margin-top: 20px;
 }
+
+#btn-start{
+/*    display: none;*/
+    margin-top: 20px;
+}
