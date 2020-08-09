@@ -13,5 +13,5 @@ urlpatterns = [
     path('games/playCard', views.play_card),
     path('games/start', views.start_game),
     path('games/leave', views.leave_game),
+    path('games/list', views.list_games),
 ]
-

@@ -116,3 +116,10 @@ def leave_game(request):
 
     Player.leave_game(token)
 
+
+@screen_errors
+def list_games(request):
+    response = [game.to_dict()
+                for game in Game.objects.exclude(status="FINISHED").all()]
+
+    return JsonResponse(response, safe=False)
