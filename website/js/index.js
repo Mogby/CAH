@@ -7,6 +7,14 @@ function setToken(token) {
 	State.token = token
 }
 
+function setId(userId) {
+    State.userId = userId
+}
+
+function getId(userId) {
+    return State.userId
+}
+ 
 function getToken() {
 	return State.token
 }
@@ -43,8 +51,8 @@ function displayGameState(gameState) {
     let gameHostStr = JSON.stringify(gameState.hostId)
     let gameStr = JSON.stringify(gameState)
     $('div#game.game-view>p#state').text("Номер комнаты: " + gameIdStr + " ИГРОКИ: " + gamePlayersStr + " Статус: " + gameStatusStr + " Хост: " + gameHostStr)
-    let playerId = getMe()
-    if (gameHostStr != JSON.stringify(playerId.id)) {
+    let playerId = State.userId
+    if (gameHostStr != playerId) {
         $('#btn-start').hide();
     }
     //$('div#game.game-view>p#state').text(gameState)
@@ -54,14 +62,13 @@ function displayGameState(gameState) {
 
 function login() {
 	let name = $('input#login').val()
-
 	let url = getMethodUrl('/players/add')
 	$.get(
 		url,
 		{ name: name },
 		function(data) {
 			setToken(data)
-			switchToView('choose-game-type')
+            getMe()
 		}
 	)
 }
@@ -122,12 +129,16 @@ function startGame() {
 
 function getMe() {
     let url = getMethodUrl('/players/getMe')
-    $.get(
-        url,
+	$.get(
+		url,
         {
             authToken: getToken()
-        }
-    )
+        },
+		function(data) {
+			setId(data.id)
+            switchToView('choose-game-type')
+		}
+	)
 }
 
 function updateGameState() {
