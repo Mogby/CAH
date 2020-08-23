@@ -50,12 +50,28 @@ function displayGameState(gameState) {
     let gameStatusStr = JSON.stringify(gameState.status)
     let gameHostStr = JSON.stringify(gameState.hostId)
     let gameStr = JSON.stringify(gameState)
-    $('div#game.game-view>p#state').text("Номер комнаты: " + gameIdStr + " ИГРОКИ: " + gamePlayersStr + " Статус: " + gameStatusStr + " Хост: " + gameHostStr)
+	let textpast=[]
+	textpast.push("Номер комнаты: "+gameIdStr)
+	textpast.push("ИГРОКИ: ")
+	for (let item in gameState.players){
+		textpast.push(gameState.players[item].name)
+		
+		for (let cardname in gameState.players[item].hand){
+			if (cardname == 0) {
+				textpast.push("КОЛОДА: ")
+			}
+			textpast.push(gameState.players[item].hand[cardname].text)
+		}
+	}
+	
     let playerId = State.userId
     if (gameHostStr != playerId) {
         $('#btn-start').hide();
     }
-    //$('div#game.game-view>p#state').text(gameState)
+	textpast.push("ХОСТА ID: ")
+	textpast.push(gameHostStr)
+    $('div#game.game-view>p#state').text(textpast)
+	//$('div#game.game-view>p#state').text("Номер комнаты: " + gameIdStr + " ИГРОКИ: " + gamePlayersStr + " Хост: " + gameHostStr)
 }
 
 /*==========[API]==========*/
