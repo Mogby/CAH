@@ -42,6 +42,14 @@ function switchToView(newView) {
 	}
 	$(`div#${newView}.game-view`).fadeIn()
 	State.currentView = newView
+    //ебаный костыль
+    if (State.currentView == 'game'){
+        $('body').css('width','auto')
+        $('body').css('margin','none')
+        $('div').css('margin-top', '0%')
+        $('div').css('width', 'auto')
+    }
+
 }
 
 function displayGameState(gameState) {
@@ -57,10 +65,7 @@ function displayGameState(gameState) {
         textpast.push(gameState.players[item].name)
 
         for (let cardname in gameState.players[item].hand){
-            if (cardname == 0) {
-                textpast.push("КОЛОДА: ")
-            }
-            textpast.push(gameState.players[item].hand[cardname].text)
+            $('#card'+cardname).text(gameState.players[item].hand[cardname].text)
         }
     }
 
