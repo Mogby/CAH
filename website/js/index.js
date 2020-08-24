@@ -48,6 +48,11 @@ function switchToView(newView) {
         $('body').css('margin','none')
         $('div').css('margin-top', '0%')
         $('div').css('width', 'auto')
+        $('.task').css('margin-top', '')
+        $('.task').css('width', '')
+        $('.score').css('margin-top', '')
+        $('.score').css('width', '')
+        $('.row').css('margin-top', '-20px')
     }
 
 }
